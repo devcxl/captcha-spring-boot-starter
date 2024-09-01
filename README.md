@@ -13,6 +13,8 @@
 </dependency>
 ```
 
+> 还未上传至maven主仓库 请clone后 mvn install 进行安装 后再导入
+
 2. 添加`properties`配置
 
 ```properties
@@ -51,21 +53,23 @@ public class CaptchaConfig extends CaptchaInterceptor {
 
 ```html
     <!-- 引用CF的验证码js 显示渲染-->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
 ```
+
 5. 添加js完成
 
 ```javascript
     window.onloadTurnstileCallback = function () {
-        turnstile.render('#example-container', {
-            sitekey: 'xxxxxxxxxxxxxx',
-            callback: function (token) {
-                console.log(`Challenge Success ${token}`);
-                localStorage.setItem("token", token);
-            },
-        });
-    };
+    turnstile.render('#example-container', {
+        sitekey: 'xxxxxxxxxxxxxx',
+        callback: function (token) {
+            console.log(`Challenge Success ${token}`);
+            localStorage.setItem("token", token);
+        },
+    });
+};
 ```
+
 6. 前端完整代码
 
 ```html
