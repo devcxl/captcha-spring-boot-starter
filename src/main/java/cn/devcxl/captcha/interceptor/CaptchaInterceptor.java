@@ -69,7 +69,7 @@ public abstract class CaptchaInterceptor implements HandlerInterceptor {
      * @param response
      * @return
      */
-    public abstract Object handlerResponse(HttpServletResponse response);
+    public abstract void handlerResponse(HttpServletResponse response);
 
 
 }
