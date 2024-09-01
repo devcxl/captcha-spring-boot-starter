@@ -1,5 +1,6 @@
 package cn.devcxl.captcha.properties;
 
+import cn.devcxl.captcha.component.CaptchaProvider;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -19,6 +20,11 @@ public class CaptchaProperties {
     private String secretKey;
 
     /**
+     * 验证提供者
+     */
+    private CaptchaProvider provider = CaptchaProvider.TURNSTILE;
+
+    /**
      * 请求头参数名
      */
     private String headerParameterName = "X-Captcha-Response";
@@ -29,7 +35,6 @@ public class CaptchaProperties {
      * Cloudflare: https://challenges.cloudflare.com/turnstile/v0/siteverify
      */
     private String verifyUrl;
-
 
     public Boolean getEnabled() {
         return enabled;
@@ -45,6 +50,14 @@ public class CaptchaProperties {
 
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
+    }
+
+    public CaptchaProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(CaptchaProvider provider) {
+        this.provider = provider;
     }
 
     public String getHeaderParameterName() {

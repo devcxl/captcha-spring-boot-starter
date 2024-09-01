@@ -1,10 +1,13 @@
 package cn.devcxl.captcha.component;
 
 import cn.devcxl.captcha.properties.CaptchaProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +19,7 @@ import java.util.Map;
 public class CaptchaVerifier {
 
 
+    private static final Logger log = LoggerFactory.getLogger(CaptchaVerifier.class);
     private final CaptchaProperties captchaProperties;
 
     private final RestTemplate restTemplate;
@@ -41,31 +45,8 @@ public class CaptchaVerifier {
 
         // 检查响应状态并返回结果
         if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
+            log.debug("{}", responseEntity.getBody());
             return responseEntity.getBody().isSuccess();
-        }
-        return false;
-    }
-
-    public boolean verify(String token,double score) {
-        // 构建请求体
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("secret", captchaProperties.getSecretKey());
-        requestBody.put("response", token);
-
-        // 发起POST请求
-        ResponseEntity<RecaptchaResponse> responseEntity = restTemplate.postForEntity(
-                captchaProperties.getVerifyUrl(),
-                requestBody,
-                RecaptchaResponse.class
-        );
-
-        // 检查响应状态并返回结果
-        if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
-            if (responseEntity.getBody().isSuccess()){
-                RecaptchaResponse body = responseEntity.getBody();
-                double score1 = body.getScore();
-                return score1 > score;
-            }
         }
         return false;
     }
@@ -77,6 +58,18 @@ public class CaptchaVerifier {
         private String challenge_ts;
         private String hostname;
         private String[] errorCodes;
+
+        @Override
+        public String toString() {
+            return "RecaptchaResponse{" +
+                    "success=" + success +
+                    ", score=" + score +
+                    ", action='" + action + '\'' +
+                    ", challenge_ts='" + challenge_ts + '\'' +
+                    ", hostname='" + hostname + '\'' +
+                    ", errorCodes=" + Arrays.toString(errorCodes) +
+                    '}';
+        }
 
         public boolean isSuccess() {
             return success;

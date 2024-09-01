@@ -59,6 +59,7 @@ public abstract class CaptchaInterceptor implements HandlerInterceptor {
      */
     private boolean captchaCheck(HttpServletRequest request, double score) {
         String token = request.getHeader(captchaProperties.getHeaderParameterName());
+        log.debug("token:{}", token);
         return captchaVerifier.verify(token);
     }
 

@@ -5,13 +5,15 @@ import cn.devcxl.captcha.component.CaptchaVerifier;
 import cn.devcxl.captcha.configuration.CaptchaConfig;
 import cn.devcxl.captcha.interceptor.CaptchaInterceptor;
 import cn.devcxl.captcha.properties.CaptchaProperties;
+import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -21,6 +23,13 @@ import org.springframework.web.client.RestTemplate;
 @EnableConfigurationProperties(CaptchaProperties.class)
 @ConditionalOnProperty(prefix = "captcha", name = "enabled", havingValue = "true", matchIfMissing = false)
 public class CaptchaAutoConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(CaptchaAutoConfiguration.class);
+
+    @PostConstruct
+    public void init() {
+        log.info(":) CaptchaAutoConfiguration Started");
+    }
 
     /**
      * 配置拦截器
